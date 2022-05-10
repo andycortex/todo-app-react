@@ -1,8 +1,15 @@
 import React from 'react'
 import './../styles/createTodoButton.css'
-const CreateTodoButton = () => {
+
+const CreateTodoButton = (props) => {
+  const onClickButton = () => {
+    props.setOpenModal(prevState => !prevState);
+  };
   return (
-    <button className="CreateTodoButton">+</button>
+    <button 
+      className="CreateTodoButton"
+      onClick={onClickButton}
+    >+</button>
   )
 }
 
