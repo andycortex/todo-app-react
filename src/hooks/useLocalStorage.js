@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 const useLocalStorage = (itemName, initialValue) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState(initialValue)
+  const [item, setItem] = useState(initialValue);
+  const [sincronizedItem, setSincronizedItem] = useState(true);
   
  
   useEffect(() => {
@@ -12,7 +13,6 @@ const useLocalStorage = (itemName, initialValue) => {
         const localStorageItem = localStorage.getItem(itemName)
         let parsedItem;
         if (!localStorageItem) { 
-            console.log('si');
             localStorage.setItem(itemName, JSON.stringify(initialValue));
             parsedItem = initialValue;
           }else {
@@ -20,11 +20,12 @@ const useLocalStorage = (itemName, initialValue) => {
           }
           setItem(parsedItem);
           setLoading(false);
+          setSincronizedItem(true);
       }catch (e) {
         setError(e);
       }
     }, 1000)
-  })
+  },[sincronizedItem])
   
     const saveItem = (newItem) => {
       try {
@@ -35,11 +36,16 @@ const useLocalStorage = (itemName, initialValue) => {
         setError(e);
       }
     };
+    const sincronizeItem = () => {
+      setLoading(true);
+      setSincronizedItem(false);
+    }
       return {
           item,
           saveItem,
           loading,
           error,
+          sincronizeItem,
       };
     }
 export default useLocalStorage;
